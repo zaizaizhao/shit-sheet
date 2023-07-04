@@ -8,7 +8,9 @@ export default class Editor {
   pageCanvasCtxList: CanvasRenderingContext2D[] = [];
 
   constructor(container: Element, data: Data[], options = {}) {
+    //* 定义载体元素
     this.container = container;
+    //* 结构化数据
     this.data = data;
     this.options = Object.assign(options, {
       pageWidth: 794, // 纸张宽度
@@ -18,18 +20,17 @@ export default class Editor {
       pagePaddingIndicatorSize: 35, // 纸张内边距指示器的大小，也就是四个直角的边长
       pagePaddingIndicatorColor: "#BABABA", // 纸张内边距指示器的颜色，也就是四个直角的边颜色
     });
-    this.pageCanvasList = []; // 页面canvas列表
-    this.pageCanvasCtxList = []; // 页面canvas绘图上下文列表
-    this.createPage();
+    this.pageCanvasList = []; //*页面canvas列表
+    this.pageCanvasCtxList = []; //* 页面canvas绘图上下文列表
+    // this.createPage();
   }
 
   createPage() {
-    console.log(123);
-
     let { pageWidth, pageHeight, pageMargin } = this.options as Options;
     let canvas = document.createElement("canvas");
     canvas.width = pageWidth;
     canvas.height = pageHeight;
+    //* 鼠标hover显示
     canvas.style.cursor = "text";
     canvas.style.backgroundColor = "#fff";
     canvas.style.boxShadow = "#9ea1a566 0 2px 12px";
@@ -38,9 +39,9 @@ export default class Editor {
     let ctx = canvas.getContext("2d");
     this.pageCanvasList.push(canvas);
     this.pageCanvasCtxList.push(ctx as CanvasRenderingContext2D);
-    this.renderPagePaddingIndicators(ctx);
+    // this.renderPagePaddingIndicators(ctx);
   }
-
+  //* 渲染word页面画布的方法
   renderPagePaddingIndicators(pageNo: any) {
     let ctx = this.pageCanvasCtxList[pageNo];
     if (!ctx) {
@@ -95,7 +96,10 @@ export default class Editor {
     ];
     list.forEach((item) => {
       item.forEach((point, index: number) => {
+        //* 0:moveTo初始点;1:lineTo中间点；2：lineTo末尾点，并且走ctx.stroke进行绘制
         if (index === 0) {
+          ctx.fillStyle = "red";
+          // ctx.fillRect(50, 50, 100, 100);
           ctx.beginPath();
           //@ts-ignore
           ctx.moveTo(...point);
@@ -108,6 +112,7 @@ export default class Editor {
         }
       });
     });
+    //! restore并没有啥用这里
     ctx.restore();
   }
 }
